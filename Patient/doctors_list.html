@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Doctor list</title>
+	<link rel="stylesheet" type="text/css" href="Doctor_list.css">
+	<link rel="stylesheet" type="text/css" href="nav.css">
+	<script src="fill_name.js"></script>
+	<script type="text/javascript">
+
+		var timeVariable;
+
+		function setTime() {
+			timeVariable = setTimeout(function () {
+				window.location = 'landing_page.html';
+			}, 300000);
+		}
+
+		document.onclick = function (event) {
+			clearTimeout(timeVariable);
+			setTime();
+		};
+
+		async function getList() {
+			setTime();
+			fillName();
+			var retrievedObject = localStorage.getItem('branchName');
+			const url = 'http://localhost:3000/doctor/branch/' + retrievedObject;
+			const response = await fetch(url);
+			const json = await response.json();
+			console.log(json.length);
+			if (json.length == 0) {
+
+				document.getElementById("h1text").innerHTML = 'No doctors found in this branch.';
+				document.getElementById("h1text").style.display = 'block';
+
+			} else {
+				document.getElementById("h1text").style.display = 'none';
+				const jsonArray = [];
+
+				for (i = 0; i < json.length; i++) {
+					jsonArray.push(json[i]);
+				}
+
+				for (i = 0; i < jsonArray.length; i++) {
+					let outerDiv = document.createElement('div');
+					outerDiv.className = "outerDiv";
+
+					let imgDiv = document.createElement('div');
+					imgDiv.className = "imgDiv";
+
+					let img = document.createElement('img');
+					if (jsonArray[i].image == "")
+						img.src = './images/my_photo1.jpeg';
+					else
+						img.src = './images/' + jsonArray[i].image;
+
+					imgDiv.appendChild(img);
+					outerDiv.appendChild(imgDiv);
+
+
+
+
+					let outerDataDiv = document.createElement('div');
+					outerDataDiv.className = "outerDataDiv";
+
+					let innerDiv1 = document.createElement('div');
+					innerDiv1.className = "innerDiv";
+
+					let innerDiv2 = document.createElement('div');
+					innerDiv2.className = "innerDiv";
+
+					outerDataDiv.appendChild(innerDiv1);
+					outerDataDiv.appendChild(innerDiv2);
+
+					outerDiv.appendChild(outerDataDiv);
+
+					let innerSubDiv1 = document.createElement('div');
+					innerSubDiv1.className = 'innerSubDiv';
+
+					const h41 = document.createElement('h4');
+					h41.innerHTML = "Doctor Name : Dr. " + jsonArray[i].firstName + " " + jsonArray[i].lastName;
+
+					innerSubDiv1.appendChild(h41);
+
+
+					let innerSubDiv2 = document.createElement('div');
+					innerSubDiv2.className = 'innerSubDiv';
+
+					const h42 = document.createElement('h4');
+					h42.innerHTML = "Branch Name : " + jsonArray[i].branchName;
+
+					innerSubDiv2.appendChild(h42);
+
+					let innerSubDiv3 = document.createElement('div');
+					innerSubDiv3.className = 'innerSubDiv';
+
+					const h43 = document.createElement('h4');
+					h43.innerHTML = "Age : " + getAge(jsonArray[i].dateOfBirth + "");
+
+					innerSubDiv3.appendChild(h43);
+
+					innerDiv1.appendChild(innerSubDiv1);
+					innerDiv1.appendChild(innerSubDiv2);
+					innerDiv1.appendChild(innerSubDiv3);
+
+
+					let innerSubDiv4 = document.createElement('div');
+					innerSubDiv4.className = 'innerSubDiv';
+
+					const h44 = document.createElement('h4');
+					h44.innerHTML = "Contact Number : " + jsonArray[i].phoneNumber;
+
+					innerSubDiv4.appendChild(h44);
+
+					let innerSubDiv5 = document.createElement('div');
+					innerSubDiv5.className = 'innerSubDiv2';
+
+					const h45 = document.createElement('h4');
+					h45.innerHTML = "About Doctor : " + jsonArray[i].aboutMe;
+
+					innerSubDiv5.appendChild(h45);
+
+					innerDiv2.appendChild(innerSubDiv4);
+					innerDiv2.appendChild(innerSubDiv5);
+
+					let innerDiv3 = document.createElement('div');
+					innerDiv3.className = 'buttonDiv';
+
+					let btn = document.createElement('button');
+					btn.className="button1";
+					btn.innerHTML = '<b>BOOK APPOINTMENT</b>';
+					btn.id = jsonArray[i].phoneNumber;
+
+					innerDiv3.appendChild(btn);
+					outerDiv.appendChild(innerDiv3);
+					outerDataDiv.appendChild(innerDiv3);
+
+					btn.onclick = function () {
+						getDetails(this.id);
+					}
+
+
+
+					document.body.appendChild(outerDiv);
+				}
+			}
+
+		}
+		
+		function getAge(dob) {
+			var year = Number(dob.substring(0, 4));
+			var month = Number(dob.substring(5, 2));
+			var day = Number(dob.substring(8, 2));
+			var today = new Date();
+			console.log(today.getFullYear());
+			var age = today.getFullYear() - year;
+			if (today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)) {
+				age--;
+			}
+			return age;
+		}
+
+
+		async function getDetails(buttonId) {
+
+			console.log(buttonId);
+			const url = 'http://localhost:3000/doctor/getByPhoneNumber/' + buttonId;
+			const response = await fetch(url);
+			const json = await response.json();
+
+			localStorage.setItem('doctorName', 'Dr. ' + json[0].firstName + " " + json[0].lastName)
+			localStorage.setItem('doctorId', buttonId);
+			window.location = './book_appointment.html';
+
+		}
+
+	</script>
+</head>
+
+<body onload="getList()">
+	<nav>
+		<a href="patient_homepage.html">
+			<img src="./images/logo.png" href="patient_homepage.html" alt="logo"></img>
+		</a>
+
+		<ul>
+			<li><a href="patient_homepage.html">Home</a></li>
+			<li><a href="your_appointments.html">Appointments</a></li>
+			<li><a href="medicines.html">my medicines</a></li>
+			<li>
+                <div class="dropdown">
+                    <button class="dropbtn" id="patientName"></button>
+                    <div class="dropdown-content">
+                        <a href="profile_edit.html">Profile <i class="fa fa-user" style="font-size:22px"></i></a>
+                        <a href="landing_page.html">Logout <i class="fa fa-sign-out" style="font-size:22px"></i></a>
+                    </div>
+                </div>
+            </li>
+			<!-- <li><a href="profile_edit.html">Profile</a></li>
+			<li><a href="login_page.html">Log Out</a></li> -->
+
+		</ul>
+
+
+
+	</nav>
+	<h1>Doctor list</h1>
+
+	<h1 id="h1text" style="margin-top: 200px;">No doctors found in this branch.</h1>
+
+	<!-- <div class="outerDiv">
+
+		<div class="imgDiv">
+			<img src="./images/my_photo1.jpeg"></img>
+		</div>
+
+		<div class="outerDataDiv">
+        <div class="innerDiv">
+            <div class="innerSubDiv">
+                <h4>Doctor Name : 12341234567890dfghjkl</h4>
+            </div>
+            <div class="innerSubDiv">
+                <h4>Branch Name : Dental</h4>
+            </div>
+            <div class="innerSubDiv">
+                <h4>Age : 12</h4>
+            </div>
+        </div>
+
+        <div class="innerDiv">
+            <div class="innerSubDiv">
+                <h4>Contact Number : 1234567890</h4>
+            </div>
+            <div class="innerSubDiv2">
+                <h4>About me : MEMBER OF OTOLARYNGOLOGIST INDIAAbout me : MEMBER OF OTOLARYNGOLOGIST INDIA</h4>
+            </div>
+        </div>
+
+        <div class="buttonDiv">
+            <button class="v">BOOK APPOINTMENT</button>
+        </div>
+
+    </div>  -->
+	<!-- </div> -->
+
+</body>
+
+</html>
