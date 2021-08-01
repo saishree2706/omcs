@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Sign Up</title>
+    <link href="doctor_signup.css" rel="stylesheet" type="text/css">
+
+
+</head>
+
+<body onload="setTime()">
+    <div class="signup">
+        <h1>DOCTOR SIGN UP</h1>
+
+        <form autocomplete="off" action="javascript:myFun()" onsubmit="return myfun()" class="form-container">
+            <table>
+                <tr>
+                    <td>First name*</td>
+                    <td><input type="text" class="input" name="fname" id="fname" placeholder="First Name" required></td>
+                    <span id="messages" style="color: red; font-size: 15px;"></span>
+                </tr>
+                <tr>
+                    <td>Last Name*</td>
+                    <td><input type="text" class="input" name="lname" id="lname" placeholder="Last Name" required></td>
+                    <span id="messages" style="color:red;font-size: 15px;"></span>
+                </tr>
+                <tr>
+                    <td>Branch Name*</td>
+                    <td><input type="text" class="input" name="dname" id="dname" placeholder="Branch Name" required></td>
+                    <span id="messages" style="color:red;font-size: 15px;"></span>
+                </tr>
+                <tr>
+                    <td>Position*</td>
+                    <td><input type="text" class="input" name="position" id="position" placeholder="Position" required></td>
+                    <span id="messages" style="color:red;font-size: 15px;"></span>
+                </tr>
+                <tr>
+                    <td>Date Of Birth*</td>
+                    <td><input type="date" class="input" name="dob" id="dob" placeholder="Date Of Birth"
+                            min="1947-01-01" max="2050-01-01" required></td>
+                </tr>
+                <tr>
+                    <td>Gender*</td>
+                    <td><input type="radio" name="gender" id="male" value="Male" required>Male
+                        <input type="radio" name="gender" id="female" value="Female" required>Female
+                        <input type="radio" name="gender" id="other" value="Others" required>Others
+                    </td>
+                </tr>
+                <tr>
+                    <td>Phone Number*</td>
+                    <td><input type="text" class="input" name="phno" id="phno" placeholder="Phone Number" required></td>
+                    <span id="messages" style="color:red; font-size: 15px;"></span>
+                </tr>
+                <tr>
+                    <td>Contact Mail*</td>
+                    <td><input type="text" class="input" name="mail" id="mail" placeholder="Mail"></td>
+                    <span id="messages" style="color: red;font-size: 15px;"></span>
+                </tr>
+                
+                <tr>
+                    <td>Password*</td>
+                    <td><input type="password" name="password" id="password" class="input" placeholder="Enter password">
+                    </td>
+                    <span id="messages" style="color: red;font-size: 15px;"></span>
+                </tr>
+                <tr>
+                    <td>Confirm Password*</td>
+                    <td><input type="password" id="passwordss" class="input" placeholder="Confirm Password"></td>
+                    <span id="messagess"></span>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2"><input type="checkbox"><span>I agree to all T&C</span></td>
+                </tr>
+                <tr class="sign">
+                    <td><input type="submit" id="submit" class="signup-btn" value="SIGN UP">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <script>
+
+        var timeVariable;
+
+        function setTime() {
+            timeVariable = setTimeout(function () {
+                window.location = 'landing_page.html';
+            }, 300000);
+        }
+
+        document.onclick = function (event) {
+            clearTimeout(timeVariable);
+            setTime();
+        };
+
+        async function myFun() {
+            console.log(document.getElementById("phno").value + "=Phoneno.");
+            url = 'http://localhost:3000/doctor/getByPhoneNumber/' +
+                document.getElementById("phno").value;
+            response = await fetch(url);
+            json = await response.json();
+
+            if (json.length == 0) {
+                //Can signup
+                //check if passwords are same
+                if (document.getElementById("password").value != document.getElementById("passwordss").value) {
+                    document.getElementById("messages").innerHTML = "Passwords do not match!";
+                } else {
+                    password = btoa(password);
+                    console.log(password);
+
+                    var inputs = {
+                        "branchName":document.getElementById("dname").value,
+                        "firstName": document.getElementById("fname").value,
+                        "lastName": document.getElementById("lname").value,
+                        "position":document.getElementById("position").value,
+                        "dateOfBirth": document.getElementById("dob").value,
+                        "sex": document.getElementsByName("gender")[0].value,
+                        "phoneNumber": document.getElementById("phno").value,
+                        "contactMail": document.getElementById("mail").value,
+                        "accntPassword": document.getElementById("password").value,
+                        "flagDoctor": true,
+                        "flagActive":true
+                    }
+
+                    const url = 'http://localhost:3000/doctor/new';
+                    const response1 = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(inputs) });
+                    const json1 = await response1.json();
+                    console.log(JSON.stringify(json1[0]));
+
+                    const yourUrl = 'http://localhost:3000/doctor/getByPhoneNumber/' + document.getElementById("phno").value;
+                    const response2 = await fetch(yourUrl);
+                    const json2 = await response2.json();
+                    localStorage.setItem('doctor', JSON.stringify(json2[0]));
+
+                    window.location = '/doctor_homepage.html';
+
+                }
+
+            } else {
+                document.getElementById("messages").innerHTML = "Phone number is already registered";
+                alert("Phone number already registered!!");
+            }
+        }
+
+        function myfun() {
+
+            var correct_way = /^[A-Za-z]+$/;
+            var a = document.getElementById("fname").value;
+            if (a.match(correct_way))
+                true;
+            else {
+                document.getElementById("messages").innerHTML = "please enter firstname in characters";
+                return false;
+            }
+            var correct_way = /^[A-Za-z]+$/;
+            var b = document.getElementById("lname").value;
+            if (b.match(correct_way))
+                true;
+            else {
+                document.getElementById("messages").innerHTML = "please enter lastname in characters";
+                return false;
+            }
+
+            var branch=document.getElementById("dname").value;
+            if (branch.match(correct_way))
+                true;
+            else {
+                document.getElementById("messages").innerHTML = "please enter branch in characters";
+                return false;
+            }
+
+            var position=document.getElementById("position").value;
+            if (branch.match(correct_way))
+                true;
+            else {
+                document.getElementById("messages").innerHTML = "please enter position in characters";
+                return false;
+            }
+
+            var c = document.getElementById("phno").value;
+            if (isNaN(c)) {
+                document.getElementById("messages").innerHTML = "please fill your mobile number with digits only ";
+                return false;
+            }
+            if (c.length < 10) {
+                document.getElementById("messages").innerHTML = "Mobile number must be 10 digits";
+                return false;
+            }
+            if (c.length > 10) {
+                document.getElementById("messages").innerHTML = "Mobile number must be 10 digits";
+                return false;
+            }
+
+
+
+        }
+
+
+    </script>
+</body>
+
+</html>

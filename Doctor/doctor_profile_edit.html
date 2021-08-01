@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" type="text/css" href="doctor_profile_edit.css" />
+    <link rel="stylesheet" type="text/css" href="nav.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+    <script src="fill_name.js"></script>
+    <script>
+
+        var timeVariable;
+
+        function setTime() {
+            fillName();
+            timeVariable = setTimeout(function () {
+                window.location = 'landing_page.html';
+            }, 300000);
+        }
+
+        document.onclick = function (event) {
+            clearTimeout(timeVariable);
+            setTime();
+        };
+
+        async function autoFill() {
+
+            setTime();
+            // var retrievedObject = localStorage.getItem('doctor');
+            // doctor = JSON.parse(retrievedObject);
+
+            var url = 'http://localhost:3000/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
+            console.log(url);
+            var response = await fetch(url);
+            var json = await response.json();
+            var doctor = json[0];
+
+            document.getElementById("myForm").style.display = "block";
+            console.log("autofill..." + doctor.branchName);
+            document.getElementsByName("firstName")[0].value = doctor.firstName;
+            document.getElementsByName("lastName")[0].value = doctor.lastName;
+            document.getElementsByName("contactEmail")[0].value = doctor.contactMail;
+            document.getElementsByName("address")[0].value = doctor.address;
+            document.getElementsByName("position")[0].value = doctor.position;
+            document.getElementsByName("aboutMe")[0].value = doctor.aboutMe;
+            document.getElementsByName("accntPassword")[0].value = atob(doctor.accntPassword);
+            document.getElementsByName("image")[0].placeholder = doctor.image;
+            document.getElementsByName("flagActive")[0].checked = doctor.flagActive;
+            var date = new Date(doctor.dateOfBirth);
+            if (doctor.image == "")
+                document.getElementById("yourImage").src = "my_photo1.jpeg";
+            else
+                document.getElementById("yourImage").src = doctor.image;
+
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var dt = date.getDate();
+            if (dt < 10) {
+                dt = '0' + dt;
+            }
+            if (month < 10) {
+                month = '0' + month;
+            }
+            console.log(year + "-" + month + "-" + dt);
+            document.getElementsByName("dateOfBirth")[0].value = year + "-" + month + "-" + dt;
+
+            closeForm();
+        }
+
+        function openForm() {
+            document.getElementsByClassName("btn")[0].style.display = "block";
+            document.getElementsByClassName("btn cancel")[0].style.display = "block";
+            document.getElementsByName("firstName")[0].disabled = false;
+            document.getElementsByName("firstName")[0].focus();
+            document.getElementsByName("lastName")[0].disabled = false;
+            document.getElementsByName("contactEmail")[0].disabled = false;
+            document.getElementsByName("address")[0].disabled = false;
+            document.getElementsByName("position")[0].disabled = false;
+            document.getElementsByName("aboutMe")[0].disabled = false;
+            document.getElementsByName("accntPassword")[0].disabled = false;
+            document.getElementById("togglePassword").disabled = false;
+            document.getElementsByName("flagActive")[0].disabled = false;
+            document.getElementsByName("image")[0].disabled = false;
+        }
+
+        async function update() {
+
+            var name = document.getElementsByName("image")[0].value.replace('C:\\fakepath\\', '');
+            console.log("image name..." + name);
+
+            var dateobj = new Date(document.getElementsByName("dateOfBirth")[0].value);
+            var b = dateobj.toISOString();
+            console.log(b);
+
+            // var retrievedObject = localStorage.getItem('doctor');
+            // doctor = JSON.parse(retrievedObject);
+
+            var url = 'http://localhost:3000/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
+            console.log(url);
+            var response = await fetch(url);
+            var json = await response.json();
+            var doctor = json[0];
+
+            console.log(doctor.branchName);
+
+            inputs =
+            {
+                "firstName": document.getElementsByName("firstName")[0].value,
+                "lastName": document.getElementsByName("lastName")[0].value,
+                "dateOfBirth": b,
+                "sex": doctor.sex,
+                "phoneNumber": doctor.phoneNumber,
+                "contactMail": document.getElementsByName("contactEmail")[0].value,
+                "address": document.getElementsByName("address")[0].value,
+                "accntPassword": btoa(document.getElementsByName("accntPassword")[0].value),
+                "flagDoctor": true,
+                "flagActive": document.getElementsByName("flagActive")[0].checked,
+                "branchName": doctor.branchName,
+                "position": document.getElementsByName("position")[0].value,
+                "aboutMe": document.getElementsByName("aboutMe")[0].value,
+                "rating": doctor.rating,
+                "image": name
+            };
+
+            const url1 = 'http://localhost:3000/doctor/update/' + doctor.phoneNumber;
+            const response1 = await fetch(url1, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(inputs) });
+            const json1 = await response1.json();
+            doctor = json1[0];
+            autoFill();
+
+            localStorage.removeItem('doctor');
+            localStorage.setItem('doctor', doctor);
+            // var retrievedObject = localStorage.getItem('doctor');
+            // console.log('retrievedObject: ', JSON.parse(retrievedObject));
+            // console.log("parsed..."+JSON.parse(localStorage.getItem('doctor')));
+
+        }
+
+        function closeForm() {
+            document.getElementsByClassName("btn")[0].style.display = "none";
+            document.getElementsByClassName("btn cancel")[0].style.display = "none";
+            document.getElementsByName("firstName")[0].disabled = true;
+            document.getElementsByName("lastName")[0].disabled = true;
+            document.getElementsByName("contactEmail")[0].disabled = true;
+            document.getElementsByName("address")[0].disabled = true;
+            document.getElementsByName("position")[0].disabled = true;
+            document.getElementsByName("aboutMe")[0].disabled = true;
+            document.getElementsByName("accntPassword")[0].disabled = true;
+            document.getElementsByName("flagActive")[0].disabled = true;
+            document.getElementById("togglePassword").disabled = true;
+            document.getElementsByName("image")[0].disabled = true;
+            document.documentElement.scrollTop = 0;
+        }
+
+        function passwordToggle() {
+            var password = document.getElementsByName("accntPassword")[0];
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            document.getElementById("togglePassword").class = 'bi bi-eye-fill';
+        }
+
+        function readURL(input) {
+            console.log("hereeee image");
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                var image = document.getElementById('yourImage');
+                image.src = URL.createObjectURL(event.target.files[0]);
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="autoFill()">
+
+    <nav>
+        <a href="doctor_homepage.html">
+            <img src="logo.png" href="doctor_homepage.html" alt="logo"></img>
+        </a>
+
+        <ul>
+            <li><a href="doctor_homepage.html">Home</a></li>
+            <li><a href="doctor_new_apointment.html">New appointments</a></li>
+            <li><a href="medical_history.html">Medical History</a></li>
+            <li><a href="medicine_prescription.html">Medicines</a></li>
+            <li>
+                <div class="dropdown">
+                    <button class="dropbtn" id="patientName"></button>
+                    <div class="dropdown-content">
+                        <a href="doctor_profile_edit.html">Profile</a>
+                        <a href="landing_page.html">Logout</a>
+                    </div>
+                </div>
+            </li>
+            <!-- <li><a href="#" class="active">Profile</a></li>
+            <li><a href="doctor_login.html">Logout</a></li> -->
+
+        </ul>
+    </nav>
+
+    <a class="editButton" onclick="openForm()"><i class="fa fa-edit" style="font-size:32px"></i></a>
+
+    <h1 class="heading">Your Details</h1>
+
+    <div class="outerDiv">
+
+        <div class="form-popup" id="imageForm">
+            <form class="form-container">
+
+                <label for="image"><b>Your Image</b></label>
+                <input type="file" accept="image/*" placeholder="Choose image." name="image" onchange="readURL(this);"
+                    required>
+                <img id="yourImage" src="#" alt="Your Image" />
+
+            </form>
+        </div>
+
+        <div class="form-popup" id="myForm">
+            <form autocomplete="off" action="javascript:update()" class="form-container">
+
+                <label for="firstName"><b>First Name</b></label>
+                <input type="text" placeholder="Enter First Name" name="firstName" required>
+
+                <label for="lastName"><b>Last Name</b></label>
+                <input type="text" placeholder="Enter Last Name" name="lastName" required>
+
+                <label for="dateOfBirth"><b>Date of Birth</b></label>
+                <input type="date" placeholder="Enter date of birth" name="dateOfBirth" required>
+
+                <label for="contactEmail"><b>Contact Email</b></label>
+                <input type="email" placeholder="Enter contact email" name="contactEmail" required>
+
+                <label for="address"><b>Residential Address</b></label>
+                <input type="text" placeholder="Enter residential address" name="address" required>
+
+                <label for="position"><b>Designation</b></label>
+                <input type="text" placeholder="Enter Designation" name="position" required>
+
+                <label for="aboutMe"><b>About me</b></label>
+                <textarea name="aboutMe" cols="20" rows="5" placeholder="Enter about you"></textarea>
+                <!-- <input type="textArea" placeholder="Enter about you" name="aboutMe" required> -->
+
+                <label for="accntPassword"><b>Account Password</b></label>
+                <i class="bi bi-eye-slash" id="togglePassword" onclick="passwordToggle()"></i>
+                <input type="password" placeholder="Enter account password" name="accntPassword" required></input>
+
+                <label for="flagActive"><b>Availability</b></label>
+                <input type="checkbox" name="flagActive" required>
+
+                </label>
+
+                <button type="submit" class="btn" onclick="update()" style="display: none;">Update</button>
+                <button type="submit" class="btn cancel" onclick="closeForm()" style="display: none;">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
