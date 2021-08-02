@@ -14,8 +14,8 @@ const connectToMongoDB = async() => {
     await mongo().then(mongoose=>{
         try{
             console.log("Connected to cloud");
-        }finally{
-            mongoose.connection.close();
+        }catch (err) {
+            res.send('Error...' + err)
         }
     })
 }
@@ -28,7 +28,7 @@ connectToMongoDB();
 
 const static_path=path.join(__dirname);
 
-const url = 'mongodb://localhost:27017/Trial';
+//const url = 'mongodb://localhost:27017/Trial';
 const port = process.env.PORT || 3000;
 
 /*mongoose.connect(url, {
@@ -41,11 +41,17 @@ const port = process.env.PORT || 3000;
     console.log('connection refused')
 });
 */
-const con = mongoose.connection
+//const con = mongoose.connection
 
-app.get("/", (req, res) => {
-    res.send("Welcome page")
+app.get("/",(req,res)=>{
+    res.set({
+        "Allow-access-Allow-Origin": '*'
+    })
+    return res.redirect('./patient/landing_page.html');
 })
+/*app.get("/", (req, res) => {
+    res.send("Welcome page")
+})*/
 
 
 
