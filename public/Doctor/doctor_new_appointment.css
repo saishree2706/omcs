@@ -1,0 +1,128 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    font: poppins;
+    background-color: #C0C0C0;
+}
+
+.outerDiv{
+    margin: 30px;
+    background-color: #ddd;
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px #888888;
+    z-index: 1;
+}
+
+.innerDiv{
+   display: flex;
+   padding: 0%;
+   width: auto;
+}
+
+.innerSubDiv{
+    margin-left: 15px;
+    width: 30%;
+    padding: 0%;
+    display: flex;
+}
+
+.nv{
+    background-color: rgb(247, 48, 48);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: 14px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px #888888;
+    margin-left: 15px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.v{
+    background-color:#2ecc71;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px #888888;
+    margin-right: 5px;
+    margin-bottom: 15px;
+    cursor: pointer;
+
+}
+
+.buttonDiv
+{
+    width: fit-content;
+    margin-left: 75%;
+
+}
+
+.h11
+{
+    text-align: center;
+    margin-top: 120px;
+    width:100%;
+    text-transform: uppercase;
+}
+
+.heading{
+    width: 33%;
+    text-transform: uppercase;
+    text-shadow: #888888;
+    font-size: medium;
+    font-weight: 500;
+    margin: 10px;
+}
+
+h1{
+    align-content: center;
+    text-transform: uppercase;
+    text-align: center;
+    word-spacing: 4px;
+    margin-top: 200px;
+    font-size: 30px;
+  }
+
+
+input[type=text]{
+    margin-left: 10px;
+    width: auto;
+
+}
+
+input[type=date]{
+    margin-left: 10px;
+}
+
+.innerDivMessage
+{
+display: block;
+   padding: 0%;
+   width: auto;
+}
+
+.innerSubDivMessage
+{
+    margin-left: 15px;
+    width: 60%;
+    padding: 0%;
+    display: flex; 
+}

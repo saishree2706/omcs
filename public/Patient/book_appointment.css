@@ -1,0 +1,123 @@
+  
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+	margin-top: 50px;
+	width: 100%;
+	height: 100%;
+	background-image: url('./images/hospital4.jpg');
+}
+
+.inner-layer{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,147,173,0.9);
+	overflow: auto;
+}
+
+.form-data{
+	margin-top: 15%;
+	background-color: #FFFFFF;
+
+}
+
+.form-body{
+	padding: 20px;
+}
+
+.form-head{
+	padding: 20px;
+	border-bottom: 1px solid #CCC;
+}
+
+.form-head h2{
+	font-size: 24px;
+	font-weight: 600;
+}
+
+.no-margin{
+	margin: 0px;
+}
+
+.form-row{
+	margin-bottom: 15px;
+}
+
+.form-control{
+	background-color: #f7f7ff;
+}
+
+.form-control:focus{
+	box-shadow: none;
+	border: 3px solid #138496;
+}
+
+.btn-appointment{
+	background-color: #138496;
+	border-color: #138496;
+	width: 100%;
+}
+
+.content{
+	margin-top: 15%;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.content h1{
+	font-size: 3.5rem;
+	font-weight: 600;
+}
+
+.datepicker td, .datepicker th{
+	padding: 8px;
+}
+
+.dropdown-menu.datepicker{
+	max-width: 300px !important;
+}
+
+.slideshow-container{
+    width: 100%;
+    height: 380px;
+    position: absolute;
+	left: 50%;
+    transform:translate(-50%, -50%);
+    top: 60%; 
+	margin-right: 20px;
+    background-size: 100% 100%;
+    box-shadow: 1px 2px 10px 5px rgb(0,0,0,0.35);
+    animation-delay: 28s;
+    animation: slider 28s infinite linear;
+
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    min-width: 55px;
+    max-height: 50px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+  }
+
+  @keyframes slider{
+      0%{background-image: url('./images/hospital1.jpg'); }
+
+      50%{background-image: url('./images/hospital2.jpg');}
+
+      75%{background-image: url('./images/hospital3.jpg');}
+
+      100%{background-image: url('./images/hospital7.png');}
+
+      /* 100%{background-image: url('./images/hospital8.jpg'); } */
+  }
+
+@media screeen and (max-width: 976px){
+
+}
+

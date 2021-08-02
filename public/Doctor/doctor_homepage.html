@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="doctor_homepage.css">
+    <link rel="stylesheet" href="nav.css">
+
+    <script src="fill_name.js"></script>
+
+    <script>
+        var timeVariable;
+
+        function setTime() {
+            fillName();
+            timeVariable = setTimeout(function () {
+                window.location = 'landing_page.html';
+            }, 300000);
+        }
+
+        document.onclick = function (event) {
+            clearTimeout(timeVariable);
+            setTime();
+        };
+        async function getAllAppointments() {
+
+            setTime();
+            // var retrievedObject = localStorage.getItem('doctor');
+            // doctor = JSON.parse(retrievedObject);
+            // console.log(doctor.phoneNumber);
+
+            var url2 = 'http://localhost:3000/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
+            console.log(url2);
+            var response2 = await fetch(url2);
+            var json2 = await response2.json();
+            var doctor = json2[0];
+
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var dt = date.getDate();
+            if (dt < 10) {
+                dt = '0' + dt;
+            }
+            if (month < 10) {
+                month = '0' + month;
+            }
+            var todayDate = year + "-" + month + "-" + dt;
+            console.log("today..." + todayDate);
+
+
+
+            const url = 'http://localhost:3000/appointment/getToday/' + doctor.phoneNumber;
+            const response = await fetch(url);
+            const json = await response.json();
+
+            const jsonArray = [];
+
+            for (i = 0; i < json.length; i++) {
+                var date1 = new Date(json[i].appointmentDate);
+                var year1 = date1.getFullYear();
+                var month1 = date1.getMonth() + 1;
+                var dt1 = date1.getDate();
+                if (dt1 < 10) {
+                    dt1 = '0' + dt1;
+                }
+                if (month1 < 10) {
+                    month1 = '0' + month1;
+                }
+                var objectDate = year1 + "-" + month1 + "-" + dt1;
+                console.log("object date..." + objectDate + "     " + todayDate.localeCompare(objectDate));
+                if (todayDate.localeCompare(objectDate) == 0 && json[i].isActive && json[i].isAccepted) {
+                    jsonArray.push(json[i]);
+                }
+            }
+
+            console.log("today list length..." + jsonArray.length);
+
+            if (jsonArray.length != 0) {
+                document.getElementById("h1text").style.display = 'none';
+                const url1 = 'http://localhost:3000/patient/all';
+                const response1 = await fetch(url1);
+                const json1 = await response1.json();
+                addToPage(jsonArray, json1);
+            }
+
+            else {
+                document.getElementById("h1text").innerHTML = 'No appointments for today.';
+                document.getElementById("h1text").style.display = 'block';
+            }
+
+
+
+        }
+
+        function addToPage(json, jsonPatients) {
+
+            for (i = 0; i < json.length; i++) {
+                let div1 = document.createElement('div');
+                div1.className = "outerDiv";
+
+
+                let indiv1 = document.createElement('div');
+                indiv1.className = "innerDiv";
+
+                let inSubDiv1 = document.createElement('div');
+                inSubDiv1.className = "innerSubDiv";
+
+                let inSubDiv2 = document.createElement('div');
+                inSubDiv2.className = "innerSubDiv";
+
+                let inSubDiv3 = document.createElement('div');
+                inSubDiv3.className = "innerSubDiv";
+
+                const appointmentId = document.createElement('h4');
+                appointmentId.innerHTML = "Appointment Id : " + json[i].appointmentId;
+
+                const problem = document.createElement('h4');
+                problem.innerHTML = "Problem : " + json[i].problem;
+
+                const dateAndTime = document.createElement('h4');
+                var date = new Date(json[i].appointmentDate);
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var dt = date.getDate();
+                const time = new Date(json[i].appointmentDate).toLocaleTimeString('en',
+                    { timeStyle: 'short', hour12: false, timeZone: 'UTC' });
+                console.log(time);
+
+                dateAndTime.innerHTML = "Date and Time : " + dt + "-" + month + "-" + year + "   " + time;
+
+
+
+
+
+
+                inSubDiv1.appendChild(appointmentId);
+                inSubDiv2.appendChild(problem);
+                inSubDiv3.appendChild(dateAndTime);
+                indiv1.appendChild(inSubDiv1);
+                indiv1.appendChild(inSubDiv2);
+                indiv1.appendChild(inSubDiv3)
+                div1.appendChild(indiv1);
+
+
+
+
+                let indiv2 = document.createElement('div');
+                indiv2.className = "innerDiv";
+
+                let inSubDiv4 = document.createElement('div');
+                inSubDiv4.className = "innerSubDiv";
+
+                let inSubDiv5 = document.createElement('div');
+                inSubDiv5.className = "innerSubDiv";
+
+                let inSubDiv6 = document.createElement('div');
+                inSubDiv6.className = "innerSubDiv";
+
+                const patientName = document.createElement('h4');
+                const age = document.createElement('h4');
+                for (j = 0; j < jsonPatients.length; j++) {
+                    if (jsonPatients[j].phoneNumber == json[i].patientId) {
+                        var dob = new Date(jsonPatients[j].dateOfBirth);
+                        var month_diff = Date.now() - dob.getTime();
+                        var age_dt = new Date(month_diff);
+                        var year = age_dt.getUTCFullYear();
+                        var age1 = Math.abs(year - 1970);
+
+
+                        age.innerHTML = "Age : " + age1;
+                        patientName.innerHTML = "Patient Name : " + jsonPatients[j].firstName + " " + jsonPatients[j].lastName;
+                    }
+
+                }
+
+                const patientPhone = document.createElement('h4');
+                patientPhone.innerHTML = "Patient Contact Number : " + json[i].patientId;
+
+
+
+                inSubDiv4.appendChild(patientName);
+                inSubDiv5.appendChild(patientPhone);
+                inSubDiv6.appendChild(age);
+                indiv2.appendChild(inSubDiv4);
+                indiv2.appendChild(inSubDiv5);
+                indiv2.appendChild(inSubDiv6);
+                div1.appendChild(indiv2);
+
+
+
+
+                let indiv3 = document.createElement('div');
+                indiv3.className = "buttonDiv";
+
+                let inSubDiv7 = document.createElement('btn');
+                inSubDiv7.className = "v";
+                inSubDiv7.id = json[i].appointmentId + "-v";
+                inSubDiv7.innerHTML = "visited";
+
+
+                let inSubDiv8 = document.createElement('btn');
+                inSubDiv8.className = "nv";
+                inSubDiv8.id = json[i].appointmentId + "-nv";
+                inSubDiv8.innerHTML = "not visited";
+
+                indiv3.appendChild(inSubDiv7);
+                indiv3.appendChild(inSubDiv8);
+                div1.appendChild(indiv3);
+
+                inSubDiv7.onclick = function () {
+                    buttonClick(inSubDiv7.id);
+                }
+
+                inSubDiv8.onclick = function () {
+                    buttonClick(inSubDiv8.id);
+                }
+
+                document.body.appendChild(div1);
+
+            }
+
+        }
+
+        async function buttonClick(elementId) {
+            var res = elementId.split("-");
+            var d = new Date();
+            var n = d.toISOString();
+            console.log(res[0]);
+
+            const url = 'http://localhost:3000/appointment/getOne/' + res[0];
+            const response = await fetch(url);
+            const json = await response.json();
+            console.log(json);
+
+            if (res[1].indexOf("nv") >= 0) {
+                inputs = {
+                    "appointmentId": json[0].appointmentId,
+                    "patientId": json[0].patientId,
+                    "doctorId": json[0].doctorId,
+                    "problem": json[0].problem,
+                    "appointmentDate": json[0].appointmentDate,
+                    "createdTimestamp": json[0].createdTimestamp,
+                    "modifiedTimestamp": new Date().toISOString,
+                    "isActive": false,
+                    "isAccepted": true,
+                    "consultationFee": 200,
+                    "status": "nv"
+                }
+
+            }
+            else {
+                inputs = {
+                    "appointmentId": json[0].appointmentId,
+                    "patientId": json[0].patientId,
+                    "doctorId": json[0].doctorId,
+                    "problem": json[0].problem,
+                    "appointmentDate": json[0].appointmentDate,
+                    "createdTimestamp": json[0].createdTimestamp,
+                    "modifiedTimestamp": new Date().toISOString,
+                    "isActive": false,
+                    "isAccepted": true,
+                    "consultationFee": 200,
+                    "status": "v"
+                }
+
+            }
+
+            const url1 = 'http://localhost:3000/appointment/update/' + json[0].appointmentId;
+            const response1 = await fetch(url1, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(inputs) });
+            console.log(response1);
+            const json1 = await response1.json();
+
+            var paras = document.getElementsByClassName('outerDiv');
+
+            while (paras[0]) {
+                paras[0].parentNode.removeChild(paras[0]);
+            }
+            getAllAppointments();
+        }
+
+    </script>
+
+    <title>Doctor Homepage</title>
+</head>
+
+<body onload="getAllAppointments()">
+    <section class="sectionClass">
+        <nav>
+            <a href="#">
+                <img src="logo.png" href="#" alt="logo"></img>
+            </a>
+
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="doctor_new_apointment.html">New appointments</a></li>
+                <li><a href="medical_history.html">Medical History</a></li>
+                <li><a href="medicine_prescription.html">Medicines</a></li>
+                <!-- <li><a href="doctor_profile_edit.html">Profile</a></li> -->
+                <li>
+                    <div class="dropdown">
+                        <button class="dropbtn" id="patientName"></button>
+                        <div class="dropdown-content">
+                            <a href="doctor_profile_edit.html">Profile <i class="fa fa-user" style="font-size:22px"></i></a>
+                            <a href="landing_page.html">Logout <i class="fa fa-sign-out" style="font-size:22px"></i></a>
+                        </div>
+                    </div>
+                </li>
+                <!-- <li><a href="doctor_login.html">Logout</a></li> -->
+
+            </ul>
+        </nav>
+    </section>
+    <h1 class="h11">TODAY'S SCHEDULE</h1>
+
+    <h1 id="h1text">No new appointments for today.</h1>
+
+    <!-- <div class="outerDiv">
+        <div class="innerDiv">
+            <div class="innerSubDiv">
+                <h4>Appointment Id : </h4>
+                <h4 name="appointmentId">12341234567890dfghjkl</h4>
+            </div>
+            <div class="innerSubDiv">
+                <h4>Time of Appointment : </h4>
+                <h4 name="appointmentId">1234</h4>
+            </div>
+            <div class="innerSubDiv">
+                <h4>Problem : </h4>
+                <h4 name="appointmentId">1234</h4>
+            </div>
+        </div>
+
+        <div class="innerDiv">
+            <div class="innerSubDiv">
+                <h4>Patient Name : </h4>
+                <h4 name="appointmentId">1234</h4>
+            </div>
+            <div class="innerSubDiv">
+                <h4>Age : </h4>
+                <h4 name="appointmentId">1234</h4>
+            </div>
+            <div class="innerSubDiv">
+                <h4>Patient Contact Number : </h4>
+                <h4 name="appointmentId">1234</h4>
+            </div>
+        </div>
+
+        <div class="buttonDiv">
+            <button class="v">visited</button>
+            <button class="nv">not visited</button>
+        </div>
+
+    </div> -->
+
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Your Appointments</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="your_appointments.css" />
+    <link rel="stylesheet" type="text/css" href="nav.css">
+    <script type="text/javascript" src="your_appointments.js"></script>
+    <script src="fill_name.js"></script>
+
+</head>
+
+<body onload="getAppointments()">
+    <nav>
+        <a href="patient_homepage.html">
+            <img src="./images/logo.png" href="patient_homepage.html" alt="logo"></imag>
+        </a>
+
+        <ul>
+            <li><a href="patient_homepage.html">Home</a></li>
+            <li><a href="#"  class="active">Appointments</a></li>
+            <li><a href="medicines.html">my medicines</a></li>
+            
+            <li>
+                <div class="dropdown">
+                    <button class="dropbtn" id="patientName"></button>
+                    <div class="dropdown-content">
+                        <a href="profile_edit.html">Profile <i class="fa fa-user" style="font-size:22px"></i></a>
+                        <a href="landing_page.html">Logout <i class="fa fa-sign-out" style="font-size:22px"></i></a>
+                    </div>
+                </div>
+            </li>
+            <!-- <li><a href="profile_edit.html">Profile</a></li>
+            <li><a href="login_page.html">Log out</a></li> -->
+        </ul>
+
+    </nav>
+
+    <h1 id="demo">Your Appointments</h1>
+
+    <h1 id="h1text" style="margin-top: 120px;display: none;">No appointment id entered.</h1>
+
+</body>
+
+
+
+
+</html>

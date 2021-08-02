@@ -5,7 +5,7 @@ const mongo = require('./mongo.js');
 var cors = require('cors');
 
 const app = express();
-
+app.use(express.static('public'))
 app.use(cors());
 
 //Added
@@ -43,12 +43,7 @@ const port = process.env.PORT || 3000;
 */
 //const con = mongoose.connection
 
-app.get("/",(req,res)=>{
-    res.set({
-        "Allow-access-Allow-Origin": '*'
-    })
-    return res.redirect('/Patient/landing_page.html');
-})
+
 /*app.get("/", (req, res) => {
     res.send("Welcome page")
 })*/
@@ -81,3 +76,9 @@ app.use('/medicine',medicineRouter);
 //     res.send("404 Error page");
 // });
 
+app.get("/",(req,res)=>{
+    res.set({
+        "Allow-access-Allow-Origin": '*'
+    })
+    res.redirect('landing_page.html');
+})
