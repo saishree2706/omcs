@@ -1,5 +1,5 @@
 async function fillName(){
-    var url = 'http://localhost:3000/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
+    var url = 'https://omcs-miniproject.herokuapp.com/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
             console.log(url);
             var response = await fetch(url);
             var json = await response.json();

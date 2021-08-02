@@ -10,7 +10,7 @@
 
         function newDoctor()
         {
-            window.location = 'doctor_signup.html';
+            window.location = './doctor_signup.html';
         }
 
 
@@ -33,7 +33,7 @@
             }
 
 
-            const url = 'http://localhost:3000/doctor/getByPhoneNumber/' + document.getElementById("phoneNumber").value;
+            const url = 'https://omcs-miniproject.herokuapp.com/doctor/getByPhoneNumber/' + document.getElementById("phoneNumber").value;
             console.log(url);
             const response = await fetch(url);
             const json = await response.json();
@@ -58,13 +58,13 @@
                     localStorage.setItem('doctorId', json[0].phoneNumber);
                     // var retrievedObject = localStorage.getItem('doctor');
                     // console.log('retrievedObject: ', JSON.parse(retrievedObject));
-                    window.location = 'doctor_homepage.html';
+                    window.location = './doctor_homepage.html';
                 }
             }
         }
 
         async function forgotPassword() {
-            const url = 'http://localhost:3000/doctor/forgotPassword/' +
+            const url = 'https://omcs-miniproject.herokuapp.com/doctor/forgotPassword/' +
                 document.getElementById("phoneNumber").value;
 
             const response = await fetch(url);
@@ -81,7 +81,7 @@
         function setTime() {
             fillName();
             timeVariable = setTimeout(function () {
-                window.location = 'landing_page.html';
+                window.location = '../landing_page.html';
             }, 300000);
         }
 

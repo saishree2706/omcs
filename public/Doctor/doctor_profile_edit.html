@@ -16,7 +16,7 @@
         function setTime() {
             fillName();
             timeVariable = setTimeout(function () {
-                window.location = 'landing_page.html';
+                window.location = '../landing_page.html';
             }, 300000);
         }
 
@@ -31,7 +31,7 @@
             // var retrievedObject = localStorage.getItem('doctor');
             // doctor = JSON.parse(retrievedObject);
 
-            var url = 'http://localhost:3000/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
+            var url = 'https://omcs-miniproject.herokuapp.com/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
             console.log(url);
             var response = await fetch(url);
             var json = await response.json();
@@ -97,7 +97,7 @@
             // var retrievedObject = localStorage.getItem('doctor');
             // doctor = JSON.parse(retrievedObject);
 
-            var url = 'http://localhost:3000/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
+            var url = 'https://omcs-miniproject.herokuapp.com/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
             console.log(url);
             var response = await fetch(url);
             var json = await response.json();
@@ -124,7 +124,7 @@
                 "image": name
             };
 
-            const url1 = 'http://localhost:3000/doctor/update/' + doctor.phoneNumber;
+            const url1 = 'https://omcs-miniproject.herokuapp.com/doctor/update/' + doctor.phoneNumber;
             const response1 = await fetch(url1, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(inputs) });
             const json1 = await response1.json();
             doctor = json1[0];

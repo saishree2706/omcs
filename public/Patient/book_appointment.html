@@ -113,7 +113,7 @@
 		function setTime() {
 			fillName();
 			timeVariable = setTimeout(function () {
-				window.location = 'landing_page.html';
+				window.location = '../landing_page.html';
 			}, 300000);
 		}
 
@@ -165,13 +165,13 @@
 
 			console.log(JSON.stringify(inputs));
 
-			const url1 = 'http://localhost:3000/appointment/new';
+			const url1 = 'https://omcs-miniproject.herokuapp.com/appointment/new';
 			const response1 = await fetch(url1, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(inputs) });
 			console.log("json response..." + response1);
 			const json1 = await response1.json();
 
 			alert("Your appointment has been booked. Doctor will respond shortly.");
-			window.location = '/patient_homepage.html';
+			window.location = './patient_homepage.html';
 		}
 
 

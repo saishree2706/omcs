@@ -90,7 +90,7 @@
 
         async function myFun() {
             console.log(document.getElementById("phno").value + "=Phoneno.");
-            url = 'http://localhost:3000/patient/getByPhoneNumber/' +
+            url = 'https://omcs-miniproject.herokuapp.com/patient/getByPhoneNumber/' +
                 document.getElementById("phno").value;
             response = await fetch(url);
             json = await response.json();
@@ -117,12 +117,12 @@
                         "flagPatient": true,
 
                     }
-                    const url = 'http://localhost:3000/patient/new';
+                    const url = 'https://omcs-miniproject.herokuapp.com/patient/new';
                     const response1 = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(inputs) });
                     const json1 = await response1.json();
                     console.log(JSON.stringify(json1[0]));
 
-                    const yourUrl = 'http://localhost:3000/patient/getByPhoneNumber/' + document.getElementById("phno").value;
+                    const yourUrl = 'https://omcs-miniproject.herokuapp.com/patient/getByPhoneNumber/' + document.getElementById("phno").value;
                     const response2 = await fetch(yourUrl);
                     const json2 = await response2.json();
                     localStorage.setItem('patient', JSON.stringify(json2[0]));

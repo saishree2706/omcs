@@ -9,7 +9,7 @@ var timeVariable;
 
 function setTime() {
     timeVariable = setTimeout(function () {
-        window.location = 'landing_page.html';
+        window.location = '../landing_page.html';
     }, 300000);
 }
 
@@ -30,7 +30,7 @@ async function getAppointments() {
     patient = JSON.parse(retrievedObject);
     console.log(patient);
 
-    const yourUrl = 'http://localhost:3000/appointment/getByPatient/' + patient.phoneNumber;
+    const yourUrl = 'https://omcs-miniproject.herokuapp.com/appointment/getByPatient/' + patient.phoneNumber;
     const response = await fetch(yourUrl);
     const json = await response.json();
     const jsonArray = [];
@@ -45,7 +45,7 @@ async function getAppointments() {
             jsonArray.push(json[i]);
         }
 
-        const urlDoctor = 'http://localhost:3000/doctor/all';
+        const urlDoctor = 'https://omcs-miniproject.herokuapp.com/doctor/all';
         const responseDoctor = await fetch(urlDoctor);
         const jsonDoctor = await responseDoctor.json();
 

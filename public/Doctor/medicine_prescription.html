@@ -13,7 +13,7 @@
         function setTime() {
             fillName();
             timeVariable = setTimeout(function () {
-                window.location = 'landing_page.html';
+                window.location = '../landing_page.html';
             }, 300000);
         }
 
@@ -39,7 +39,7 @@
             }
 
             else {
-                const url = 'http://localhost:3000/appointment/getOne/' + appointmentId;
+                const url = 'https://omcs-miniproject.herokuapp.com/appointment/getOne/' + appointmentId;
                 // + document.getElementById("appointmentId").value;
                 const response = await fetch(url);
                 const json = await response.json();
@@ -49,7 +49,7 @@
                     document.getElementById("h1text").style.display = 'block';
                 }
                 else {
-                    const url1 = 'http://localhost:3000/medicine/getByAppointment/' + appointmentId;
+                    const url1 = 'https://omcs-miniproject.herokuapp.com/medicine/getByAppointment/' + appointmentId;
                     const response1 = await fetch(url1);
                     const json1 = await response1.json();
 
@@ -129,7 +129,7 @@
                     "price": 0
                 }
 
-                const url = 'http://localhost:3000/medicine/new';
+                const url = 'https://omcs-miniproject.herokuapp.com/medicine/new';
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(inputs)

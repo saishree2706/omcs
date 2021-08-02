@@ -14,7 +14,7 @@
         function setTime() {
             fillName();
             timeVariable = setTimeout(function () {
-                window.location = 'landing_page.html';
+                window.location = '../landing_page.html';
             }, 300000);
         }
 
@@ -43,7 +43,7 @@
                 return;
             }
 
-            const url = 'http://localhost:3000/appointment/getByPatient/' +
+            const url = 'https://omcs-miniproject.herokuapp.com/appointment/getByPatient/' +
                 document.getElementById("patientId").value;
             // + document.getElementById("patientId").value;
             const response = await fetch(url);
@@ -58,7 +58,7 @@
                 console.log(json);
                 console.log(json.length);
 
-                const urlDoctor = 'http://localhost:3000/doctor/all';
+                const urlDoctor = 'https://omcs-miniproject.herokuapp.com/doctor/all';
                 const responseDoctor = await fetch(urlDoctor);
                 const jsonDoctor = await responseDoctor.json();
 

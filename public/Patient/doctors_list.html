@@ -12,7 +12,7 @@
 
 		function setTime() {
 			timeVariable = setTimeout(function () {
-				window.location = 'landing_page.html';
+				window.location = '../landing_page.html';
 			}, 300000);
 		}
 
@@ -25,7 +25,7 @@
 			setTime();
 			fillName();
 			var retrievedObject = localStorage.getItem('branchName');
-			const url = 'http://localhost:3000/doctor/branch/' + retrievedObject;
+			const url = 'https://omcs-miniproject.herokuapp.com/doctor/branch/' + retrievedObject;
 			const response = await fetch(url);
 			const json = await response.json();
 			console.log(json.length);
@@ -165,7 +165,7 @@
 		async function getDetails(buttonId) {
 
 			console.log(buttonId);
-			const url = 'http://localhost:3000/doctor/getByPhoneNumber/' + buttonId;
+			const url = 'https://omcs-miniproject.herokuapp.com/doctor/getByPhoneNumber/' + buttonId;
 			const response = await fetch(url);
 			const json = await response.json();
 

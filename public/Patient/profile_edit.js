@@ -4,7 +4,7 @@ var timeVariable;
 
 function setTime() {
     timeVariable = setTimeout(function () {
-        window.location = 'landing_page.html';
+        window.location = '../landing_page.html';
     }, 300000);
 }
 
@@ -70,7 +70,7 @@ async function update() {
         "modified_timestamp": new Date().toISOString
 
     };
-    const url = 'http://localhost:3000/patient/update/' + patient.phoneNumber;
+    const url = 'https://omcs-miniproject.herokuapp.com/patient/update/' + patient.phoneNumber;
     fetch(url, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -80,7 +80,7 @@ async function update() {
     change();
     async function change() {
 
-        var response = await fetch('http://localhost:3000/patient/getByPhoneNumber/' +
+        var response = await fetch('https://omcs-miniproject.herokuapp.com/patient/getByPhoneNumber/' +
             patient.phoneNumber);
         var json = await response.json();
         patient = json;

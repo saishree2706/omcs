@@ -16,7 +16,7 @@
         function setTime() {
             fillName();
             timeVariable = setTimeout(function () {
-                window.location = 'landing_page.html';
+                window.location = '../landing_page.html';
             }, 300000);
         }
 
@@ -31,7 +31,7 @@
             // doctor = JSON.parse(retrievedObject);
             // console.log(doctor.phoneNumber);
 
-            var url2 = 'http://localhost:3000/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
+            var url2 = 'https://omcs-miniproject.herokuapp.com/doctor/getByPhoneNumber/' + localStorage.getItem('doctorId');
             console.log(url2);
             var response2 = await fetch(url2);
             var json2 = await response2.json();
@@ -52,7 +52,7 @@
 
 
 
-            const url = 'http://localhost:3000/appointment/getToday/' + doctor.phoneNumber;
+            const url = 'https://omcs-miniproject.herokuapp.com/appointment/getToday/' + doctor.phoneNumber;
             const response = await fetch(url);
             const json = await response.json();
 
@@ -80,7 +80,7 @@
 
             if (jsonArray.length != 0) {
                 document.getElementById("h1text").style.display = 'none';
-                const url1 = 'http://localhost:3000/patient/all';
+                const url1 = 'https://omcs-miniproject.herokuapp.com/patient/all';
                 const response1 = await fetch(url1);
                 const json1 = await response1.json();
                 addToPage(jsonArray, json1);
@@ -230,7 +230,7 @@
             var n = d.toISOString();
             console.log(res[0]);
 
-            const url = 'http://localhost:3000/appointment/getOne/' + res[0];
+            const url = 'https://omcs-miniproject.herokuapp.com/appointment/getOne/' + res[0];
             const response = await fetch(url);
             const json = await response.json();
             console.log(json);
@@ -268,7 +268,7 @@
 
             }
 
-            const url1 = 'http://localhost:3000/appointment/update/' + json[0].appointmentId;
+            const url1 = 'https://omcs-miniproject.herokuapp.com/appointment/update/' + json[0].appointmentId;
             const response1 = await fetch(url1, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(inputs) });
             console.log(response1);
             const json1 = await response1.json();
