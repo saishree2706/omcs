@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+		integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
+		crossorigin="anonymous" />
+	<link rel="stylesheet" type="text/css" href="book_appointment.css">
+	<link rel="stylesheet" type="text/css" href="nav.css">
+	<script src="fill_name.js"></script>
+	<title>Book Appointment</title>
+</head>
+
+<body onload="fun()">
+	<nav>
+		<a href="patient_homepage.html">
+			<img src="./images/logo.png" href="patient_homepage.html" alt="logo"></img>
+		</a>
+
+		<ul>
+			<li><a href="patient_homepage.html">Home</a></li>
+			<li><a href="your_appointments.html">Appointments</a></li>
+			<li><a href="medicines.html">my medicines</a></li>
+
+			<li>
+				<div class="dropdown">
+					<button class="dropbtn" id="patientName"></button>
+					<div class="dropdown-content">
+						<a href="profile_edit.html">Profile </a>
+						<a href="landing_page.html">Logout</a>
+					</div>
+				</div>
+			</li>
+			<!-- <li><a href="profile_edit.html">Profile</a></li>
+			<li><a href="login_page.html">Log Out</a></li> -->
+		</ul>
+	</nav>
+
+	<form autocomplete="off" action="javascript:bookAppointment()" id="myForm">
+		<div class="inner-layer">
+			<div class="container">
+				<div class="row no-margin">
+					<div class="col-md-6">
+						<div class="content">
+							<div class="slideshow-container" src="./images/hospital2.jpg"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-data">
+							<div class="form-head">
+								<h2 style="text-align: center;">BOOK APPOINTMENT</h2>
+							</div>
+							<div class="form-body">
+
+								<div class="row form-row">
+									<b>YOUR NAME : </b> <br><input type="text" name="patientId"
+										placeholder="Patient Name" class="form-control" readonly="readonly">
+								</div>
+								<div class="row form-row">
+									<b>DOCTOR NAME :</b><input type="text" name="doctorId" placeholder="Doctor Name"
+										class="form-control" readonly="readonly">
+								</div>
+								<div class="row form-row">
+									<input type="text" name="problem" placeholder="Problem" class="form-control"
+										required>
+								</div>
+
+								<div class="row form-row">
+									<input type="datetime-local" id="date" name="appointmentDate"
+										placeholder="Appointment Date" class="form-control" required>
+								</div>
+								<div class="row form-row">
+									Consultation Fee :<input type="text" name="consultationFee"
+										placeholder="Consultation Fee" class="form-control" readonly="readonly">
+								</div>
+								<div class="row form-row">
+									<button class="btn btn-success btn-appointment">BOOK APPOINTMENT</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</form>
+
+
+
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
+		integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
+		crossorigin="anonymous"></script>
+
+
+	<script>
+
+		function setTime() {
+			fillName();
+			timeVariable = setTimeout(function () {
+				window.location = 'landing_page.html';
+			}, 300000);
+		}
+
+		document.onclick = function (event) {
+			clearTimeout(timeVariable);
+			setTime();
+		};
+
+		async function fun() {
+
+			setTime();
+
+			var doctorId = localStorage.getItem('doctorId');
+			var doctorName = localStorage.getItem('doctorName');
+			var retrievedObject = localStorage.getItem('patient');
+			var patientId = JSON.parse(retrievedObject);
+
+			document.getElementsByName("patientId")[0].placeholder = patientId.firstName + " " + patientId.lastName;
+			document.getElementsByName("doctorId")[0].placeholder = doctorName;
+			document.getElementsByName("consultationFee")[0].value = "₹ " + 150.00;
+		}
+
+
+		async function bookAppointment() {
+
+			// var appointmentDate = new Date(document.getElementsByName("appointmentDate")[0].value).toISOString();
+			var date = new Date().toISOString;
+			console.log(appointmentDate);
+
+			var appointmentDate = document.getElementsByName("appointmentDate")[0].value;
+			appointmentDate = appointmentDate + ":00.000Z";
+
+			console.log("appointmentDate" + appointmentDate);
+			var retrievedObject = localStorage.getItem('patient');
+			var patientId = JSON.parse(retrievedObject);
+
+			var inputs = {
+				"patientId": patientId.phoneNumber,
+				"doctorId": localStorage.getItem('doctorId'),
+				"problem": document.getElementsByName("problem")[0].value,
+				"appointmentDate": appointmentDate,
+				"createdTimestamp": date,
+				"modifiedTimestamp": date,
+				"isActive": true,
+				"isAccepted": false,
+				"status": "new appointment",
+				"consultationFee": document.getElementsByName("consultationFee")[0].value.split(" ")[1]
+			}
+
+			console.log(JSON.stringify(inputs));
+
+			const url1 = 'http://localhost:3000/appointment/new';
+			const response1 = await fetch(url1, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(inputs) });
+			console.log("json response..." + response1);
+			const json1 = await response1.json();
+
+			alert("Your appointment has been booked. Doctor will respond shortly.");
+			window.location = '/patient_homepage.html';
+		}
+
+
+	</script>
+
+</body>
+
+</html>

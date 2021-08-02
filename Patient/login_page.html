@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link type="text/css" rel="stylesheet" href="login_page.css">
+	<script type="text/javascript" src="login_page.js"></script>
+	<title>Login Page</title>
+</head>
+<body onload="setTime()">
+	<form autocomplete="off" action="javascript:fun()" class="login_frm" id="login_frm" >
+		<h1>LOGIN</h1>
+		<input type="text" name="id" id="id"placeholder="Enter your ID" required>
+		<span id="messages" style="color: red;"></span>
+		<input type="password" name="password" id="password" placeholder="Enter password" required>
+		<input type="submit" id="submit" value="LOGIN">
+		<br>
+		<label style="display: none;" id="errorLabel">Incorrect password</label>
+		<br>
+		<a href="#" class="forgot" onclick="forgot()">Forgot Password?</a>
+		
+	</form>
+</body>
+</html>
