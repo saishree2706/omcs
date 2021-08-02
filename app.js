@@ -47,7 +47,7 @@ app.get("/",(req,res)=>{
     res.set({
         "Allow-access-Allow-Origin": '*'
     })
-    return res.redirect('./patient/landing_page.html');
+    return res.redirect('/Patient/landing_page.html');
 })
 /*app.get("/", (req, res) => {
     res.send("Welcome page")
